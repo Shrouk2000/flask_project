@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Book{% endblock %}
+
+{% block content %}
+    <h1>Edit Book</h1>
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.title.label(class="form-label") }}
+                    {{ form.title(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.cover_photo.label(class="form-label") }}
+                    {{ form.cover_photo(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.number_of_pages.label(class="form-label") }}
+                    {{ form.number_of_pages(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control") }}
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+
+            {% if book.cover_photo %}
+                <div class="mt-4">
+                    <h2>Current Cover Photo:</h2>
+                    <img src="{{ url_for('static', filename='uploads/' ~ book.cover_photo) }}" alt="Cover Photo" class="img-fluid" style="max-width: 200px;">
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
