@@ -5,24 +5,23 @@ from .model import Book
 from .forms import BookForm
 from . import db
 
-main_bp = Blueprint('main', __name__)
+book_blueprint = Blueprint('main', __name__)
 UPLOAD_FOLDER = 'static/uploads'
 
 def save_file(file):
     if file:
-        # Secure and save the file
         filename = secure_filename(file.filename)
         file_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(file_path)
         return filename
     return None
 
-@main_bp.route('/')
+@book_blueprint.route('/')
 def index():
     books = Book.query.all()
     return render_template('book_list.html', books=books)
 
-@main_bp.route('/book/<int:id>', methods=['GET', 'POST'])
+@book_blueprint.route('/book/<int:id>', methods=['GET', 'POST'])
 def book_detail(id):
     book = Book.query.get_or_404(id)
     form = BookForm(obj=book)
@@ -43,7 +42,7 @@ def book_detail(id):
 
     return render_template('book_detail.html', book=book, form=form)
 
-@main_bp.route('/book/create', methods=['GET', 'POST'])
+@book_blueprint.route('/book/create', methods=['GET', 'POST'])
 def create_book():
     form = BookForm()
 
@@ -64,7 +63,7 @@ def create_book():
 
     return render_template('create_book.html', form=form)
 
-@main_bp.route('/book/edit/<int:id>', methods=['GET', 'POST'])
+@book_blueprint.route('/book/edit/<int:id>', methods=['GET', 'POST'])
 def edit_book(id):
     book = Book.query.get_or_404(id)
     form = BookForm(obj=book)
@@ -84,7 +83,7 @@ def edit_book(id):
 
     return render_template('edit_book.html', form=form, book=book)
 
-@main_bp.route('/book/delete/<int:id>', methods=['POST'])
+@book_blueprint.route('/book/delete/<int:id>', methods=['POST'])
 def delete_book(id):
     book = Book.query.get_or_404(id)
     db.session.delete(book)
